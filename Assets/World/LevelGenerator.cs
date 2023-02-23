@@ -18,7 +18,8 @@ namespace Generator
             public int maxSize;
         }
         #endregion
-        #region Variables        
+        #region Variables
+        [SerializeField] private Spawner spawner;        
         [SerializeField] private Tilemap tilemap;
         [SerializeField] private int requestedMapLenght = 100;
         [SerializeField] private int minTileHeight = 5;
@@ -62,6 +63,19 @@ namespace Generator
             }
 
             tilemap.RefreshAllTiles();
+
+            int xPos = 6;
+            int yPos  = 0;
+            for (int i = 0; i < heightOfMap; i++)
+            {
+                if(mapArray[xPos, i].tileOfChunk == null)
+                {
+                    yPos = i;
+                    break;
+                }
+            }
+            Vector3 startPos = new Vector3(xPos, yPos, 0);
+            spawner.SpawnPlayer(startPos);
         }
 
         private ChunkSettings GetRandomChunk()
