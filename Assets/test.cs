@@ -8,7 +8,7 @@ public class test : MonoBehaviour
     [SerializeField] Spawner spawner;
     void Start()
     {
-        cinemachineVirtualCamera.m_Follow = spawner.GetPlayersTransform();
+        //cinemachineVirtualCamera.m_Follow = spawner.GetPlayersTransform();
 
     }
 
