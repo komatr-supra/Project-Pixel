@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,11 +6,15 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [SerializeField] GameObject playerPrefab;
-    
+    GameObject player;
+
     public void SpawnPlayer(Vector3 position)
     {
-        Instantiate(playerPrefab, position, Quaternion.identity);
+        player = Instantiate(playerPrefab, position, Quaternion.identity);
     }
 
-    
+    internal Transform GetPlayersTransform()
+    {
+        return player.transform;
+    }
 }

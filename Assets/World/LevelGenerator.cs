@@ -22,17 +22,19 @@ namespace Generator
         [SerializeField] private Spawner spawner;        
         [SerializeField] private Tilemap tilemap;
         [SerializeField] private int requestedMapLenght = 100;
+        [SerializeField] private int startChunkLenght = 20;
         [SerializeField] private int minTileHeight = 5;
         [SerializeField] private int maxTileHeight = 15;
         [SerializeField] private int maxTileHeightChange = 2;
         [SerializeField] private ChunkSettings[] chunksForThisMap;
+        [SerializeField] private ChunkSettings backTile;
         private int heightOfMap = 30;
         private ChunkSettings[,] mapArray;
         private int mapLenght = 0;
         //first chunk of terrain must be walkable
         private bool mustBeWalkable = true;
         #endregion
-        private void Start()
+        private void Awake()
         {
             mapArray = new ChunkSettings[requestedMapLenght, heightOfMap];
             while (mapLenght <= requestedMapLenght)
@@ -42,6 +44,9 @@ namespace Generator
                 Debug.Log("new chunk is " + chunk.tileOfChunk);
                 GenerateChunkOfMap(chunk);
             }
+            //TODO
+            //generate props
+            
             UpdateTilesToTilemap();
         }
 
@@ -64,7 +69,7 @@ namespace Generator
 
             tilemap.RefreshAllTiles();
 
-            int xPos = 6;
+            int xPos = startChunkLenght / 2;
             int yPos  = 0;
             for (int i = 0; i < heightOfMap; i++)
             {
@@ -108,7 +113,7 @@ namespace Generator
         private void GenerateChunkOfMap(ChunkSettings chunk)
         {
             //size of actual chunk
-            int size = Random.Range(chunk.minSize, chunk.maxSize + 1);
+            int size = mapLenght == 0 ? startChunkLenght : Random.Range(chunk.minSize, chunk.maxSize + 1);
 
             //height of previous chunk
             int previousHeight = GetPreviousChunkHeight();
@@ -126,9 +131,14 @@ namespace Generator
                     Debug.Log("x size of array is larger than map");
                     break;
                 }
-                for (int yy = 0; yy < newRndHeight; yy++) //fill all height with input data (from GetRandomChunk() method)
-                {                    
-                    mapArray[xPos, yy] = chunk;
+                
+                var tile = chunk.tileOfChunk == null ? backTile : chunk;
+                int height = chunk.tileOfChunk == null ? previousHeight : newRndHeight; 
+                //TODO
+                //if previous chunk was null and new height is bigger than previous height, then clear previous line of background tile
+                for (int yy = 0; yy < height; yy++) //fill all height with input data (from GetRandomChunk() method)
+                {
+                    mapArray[xPos, yy] = tile;
                     Debug.Log("chunk added to position " + xPos + ", " + yy + " is: " + mapArray[xPos, yy].tileOfChunk);
                 }                
             }
