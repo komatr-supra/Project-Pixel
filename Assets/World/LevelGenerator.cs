@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-namespace Generator
+namespace ProjectPixel.Generator
 {
     public class LevelGenerator : MonoBehaviour
     {
