@@ -207,51 +207,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &410975135
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 410975137}
-  - component: {fileID: 410975136}
-  m_Layer: 0
-  m_Name: Spawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &410975136
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 410975135}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93c01fb697685184183ce2e5854f5ccf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 231714824876595595, guid: aa4e9c29920d0f5418dbdca656a753d2, type: 3}
---- !u!4 &410975137
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 410975135}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &581587306
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,7 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55a0d82be51d7684ca76a725d9466ab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawner: {fileID: 410975136}
+  spawner: {fileID: 0}
   collisionTilemap: {fileID: 1518189321}
   backgroundTilemap: {fileID: 1564609119}
   startChunkLenght: 20
@@ -289,15 +244,10 @@ MonoBehaviour:
   maxTileHeight: 10
   maxTileHeightChange: 2
   chunksForThisMap:
-  - tileOfChunk: {fileID: 11400000, guid: 46bf24ae916bd8d4ead3facdc8db6e4c, type: 2}
-    isWalkable: 1
-    minSize: 5
-    maxSize: 12
-  - tileOfChunk: {fileID: 11400000, guid: 12b2d2649998bab4994814abb886f8ff, type: 2}
-    isWalkable: 0
-    minSize: 0
-    maxSize: 2
+  - {fileID: 11400000, guid: c169a2fa8a018694eae387d3cb7bc557, type: 2}
+  - {fileID: 11400000, guid: ac19a215908509445bcf8b6ea00f337e, type: 2}
   mapSize: {x: 500, y: 30}
+  propsGO: {fileID: 5702327024556793821, guid: daa1267794158d048823d7ab0b84203f, type: 3}
 --- !u!4 &581587308
 Transform:
   m_ObjectHideFlags: 0
@@ -342,8 +292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e84a878bd0ba2468a4843a83b0713a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cinemachineVirtualCamera: {fileID: 1591495334}
-  spawner: {fileID: 410975136}
+  speed: 10
 --- !u!4 &772874900
 Transform:
   m_ObjectHideFlags: 0
@@ -352,12 +301,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 772874898}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 5.33, y: 2.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1126108917
 GameObject:
@@ -376,7 +325,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1126108918
 Transform:
   m_ObjectHideFlags: 0
@@ -761,7 +710,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1231509573}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 10.33, y: 5.2299995, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1407,7 +1356,7 @@ MonoBehaviour:
   m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 0}
+  m_Follow: {fileID: 772874900}
   m_Lens:
     FieldOfView: 60
     OrthographicSize: 5.625
@@ -1434,14 +1383,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1591495333}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 10.33, y: 5.2299995, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1199012618}
   - {fileID: 1126108918}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1648922888
 GameObject:

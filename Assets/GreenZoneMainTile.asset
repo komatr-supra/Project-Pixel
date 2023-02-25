@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9045ca209e06a4541a154e6299452c84, type: 3}
+  m_Name: GreenZoneMainTile
+  m_EditorClassIdentifier: 
+  tileRule: {fileID: 11400000, guid: 46bf24ae916bd8d4ead3facdc8db6e4c, type: 2}
+  propsSprites:
+  - {fileID: 21300000, guid: cd71b0b4505acb548b8e2a6ccd10a256, type: 3}
+  - {fileID: 21300000, guid: 98dd1bd18ea6f3d4f9b654503bdd9029, type: 3}
+  - {fileID: 21300000, guid: 8d97b51f2b865eb4fbf797dd222e1ae0, type: 3}
+  - {fileID: 21300000, guid: 6a94d30fec4299b4884f765dc2cda4e2, type: 3}
+  - {fileID: 21300000, guid: 200c13175cfd3f94a871c70a3369a4d5, type: 3}
+  - {fileID: 21300000, guid: eb05c073ab3f13045b8cc336ff11923e, type: 3}
+  - {fileID: 21300000, guid: 2f9bca887e893ff428ede9d548934cf6, type: 3}
+  - {fileID: 21300000, guid: 501a41d06e745f2478ece2ac509ee3df, type: 3}
+  - {fileID: 21300000, guid: 7c59b4279d0fe034c9e7f848a93d757a, type: 3}
+  - {fileID: 21300000, guid: 2c2698eb928900e40a5e14b1ebb79bed, type: 3}
+  - {fileID: 21300000, guid: 47ecac451ac3d3440ab010b224f163ee, type: 3}
+  - {fileID: 21300000, guid: 23ad4c0cf4f4dd445b46dfdb2f6e81b2, type: 3}
+  - {fileID: 21300000, guid: fcd3366ba7595e749bde34a4ae28c739, type: 3}
+  - {fileID: 21300000, guid: 793f2d0e50b6c7241bbb40b1eea3096f, type: 3}
+  - {fileID: 21300000, guid: e0134bd61d5ef9d4389d97d9e58be0a9, type: 3}
+  - {fileID: 21300000, guid: 88643de1b1ae7de4fae90c19fff43a4f, type: 3}
+  - {fileID: 21300000, guid: ac43c553b53c47647b9c7e91dd1e84c2, type: 3}
+  - {fileID: 21300000, guid: 10c462414ef8a7646b6c4c55dc9dea4d, type: 3}
+  - {fileID: 21300000, guid: df6e82bf6887da44495477891265ea60, type: 3}
+  - {fileID: 21300000, guid: a51a0957fe835214cbd9acd7e98ed8e9, type: 3}
+  - {fileID: 21300000, guid: 2e3f5572e90ad504591d205f60e4f65b, type: 3}
+  - {fileID: 21300000, guid: 7bf0c7aa3bd4c584eb03099bf860f112, type: 3}
+  - {fileID: 21300000, guid: ab47e70f74f309f4a9b72cb8a05bd52f, type: 3}
+  - {fileID: 21300000, guid: 2e6bac2224076924bbbe32a25d46e42c, type: 3}
+  - {fileID: 21300000, guid: 0efcb6996fddb5640bfd5605a64ac106, type: 3}
+  - {fileID: 21300000, guid: 8d1932791e25eee4ab65b31a5d490bcd, type: 3}
+  - {fileID: 21300000, guid: 434b34af33ffa0043aaa3032c39a7e2a, type: 3}
+  - {fileID: 21300000, guid: 5709449dc1ea7bf419c197fd30589d01, type: 3}
+  - {fileID: 21300000, guid: 4757732eb00d1bc4db173d54f4d96032, type: 3}
+  - {fileID: 21300000, guid: 88260ff06761f7544af7c664a5f510d8, type: 3}
+  - {fileID: 21300000, guid: 661c28ba0dcecf640a732646d1877eac, type: 3}
+  - {fileID: 21300000, guid: 8fa2d650e22237f4cb8c368b905f2614, type: 3}
+  - {fileID: 21300000, guid: ec65096d2bb15d04ba314d539c773c0d, type: 3}
+  - {fileID: 21300000, guid: 4ad8cbe349f9e5641a121fc97d53d247, type: 3}
+  - {fileID: 21300000, guid: 1472cc33ae0697143a0dc65c9e34ef7c, type: 3}
+  - {fileID: 21300000, guid: e31df149020625c429ccc66584f571b8, type: 3}
+  - {fileID: 21300000, guid: 9a43d02a12581ee4c9bb5e82c2ff23ff, type: 3}
+  - {fileID: 21300000, guid: 23e03fcb56b0f0846aab942b8beb95c2, type: 3}
+  - {fileID: 21300000, guid: c6f141cb546b74447b248e3048f3c50b, type: 3}
+  isWalkable: 1
+  minLenght: 5
+  maxHeight: 12

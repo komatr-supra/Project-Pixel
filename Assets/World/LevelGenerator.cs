@@ -9,18 +9,12 @@ namespace Generator
     {
         #region Struct of terrain data
         //maybe can be switch to scriptable object
-        [System.Serializable]
-        private struct TerrainSettings
-        {               
-            public TileBase tileOfChunk;
-            public bool isWalkable;
-            public int minSize;
-            public int maxSize;
-        }
+        
+        
         private struct ChunkData
         {
-            public TerrainSettings terrainSettings;
-            public Vector2Int size;
+            public TileLevelSO TileSO;
+            public RectInt rect;
         }
         #endregion
         #region Variables
@@ -28,12 +22,12 @@ namespace Generator
         [SerializeField] private Tilemap collisionTilemap;
         [SerializeField] private Tilemap backgroundTilemap;
         [SerializeField] private int startChunkLenght = 20;
-        [SerializeField] private int minTileHeight = 5;
-        [SerializeField] private int maxTileHeight = 15;
+        [SerializeField] private int minTileHeight = 2;
+        [SerializeField] private int maxTileHeight = 8;
         [SerializeField] private int maxTileHeightChange = 2;
-        [SerializeField] private TerrainSettings[] chunksForThisMap;
-        private int heightOfMap = 30;
+        [SerializeField] private TileLevelSO[] chunksForThisMap;
         [SerializeField] private Vector2Int mapSize;
+        [SerializeField] GameObject propsGO;
         private int mapLenght = 0;
         //first chunk of terrain must be walkable
         private bool mustBeWalkable = true;
@@ -44,51 +38,67 @@ namespace Generator
             List<ChunkData> mapChunks = GenerateMapFrontChunksData();
             //generate background tiles
             GenerateBackgroundTiles(mapChunks);
-            
-            
-            
-            
             //generate platforms
 
             //generate props
-            GenerateProps();
+            GenerateProps(mapChunks);
             //update array to tilemap
             UpdateTilesToTilemap(mapChunks);
             
         }
 
-        private void GenerateProps()
+        private void GenerateProps(List<ChunkData> mapChunks)
         {
-            
+            foreach (var chunk in mapChunks)
+            {
+                float distance = 0;
+                if(chunk.TileSO.isWalkable)
+                {
+                    do
+                    {
+                        Sprite propsSprite = chunk.TileSO.propsSprites[Random.Range(0, chunk.TileSO.propsSprites.Length)];                        
+                        float halfSpriteWidth = propsSprite.rect.width / propsSprite.pixelsPerUnit / 2;
+                        distance += Random.Range(halfSpriteWidth, halfSpriteWidth * 4);
+                        if(distance > chunk.rect.width - halfSpriteWidth)
+                        {
+                            continue;
+                        }
+                        Vector3 position = new Vector3(chunk.rect.xMin + distance, chunk.rect.yMax, 0);
+                        GameObject actualProps = Instantiate(propsGO, position, Quaternion.identity);
+                        actualProps.GetComponent<SpriteRenderer>().sprite = propsSprite;
+                    } while (distance < chunk.rect.width);
+
+                }
+            }
         }
 
         private List<ChunkData> GenerateMapFrontChunksData()
         {
-            Debug.Log("awake creating");
+            //Debug.Log("awake creating");
             List<ChunkData> returnChunkData = new();
             int previousHeight = 0;
             while (mapLenght < mapSize.x)
             {
                 ChunkData chunk = new();            
-                TerrainSettings terrainSettings = GetRandomTerrainSettings();
+                TileLevelSO terrainSettings = GetRandomTerrainSettings();
                 int chunkWidth = GetRandomWidth(terrainSettings);
                 chunkWidth = Mathf.Min(mapSize.x - chunkWidth, chunkWidth);
                 int chunkHeight = GetRandomHeight(previousHeight);
-                chunk.size = new Vector2Int(chunkWidth, chunkHeight);
-                chunk.terrainSettings = terrainSettings;
+                chunk.rect = new RectInt(mapLenght, 0, chunkWidth, chunkHeight);
+                chunk.TileSO = terrainSettings;
                 returnChunkData.Add(chunk);
-                Debug.Log(chunk.size);
+                //Debug.Log(chunk.rect);
                 mapLenght += chunkWidth;
                 previousHeight = chunkHeight;
             }
 
             return returnChunkData;
         }
-        private int GetRandomWidth(TerrainSettings terrainSettings)
+        private int GetRandomWidth(TileLevelSO terrainSettings)
         {
             return mapLenght == 0 
                     ? startChunkLenght 
-                    : Random.Range(terrainSettings.minSize, terrainSettings.maxSize + 1);
+                    : Random.Range(terrainSettings.minLenght, terrainSettings.maxHeight + 1);
         }
         private void GenerateBackgroundTiles(List<ChunkData> mapChunks)
         {
@@ -97,53 +107,56 @@ namespace Generator
             //set it to its height
             for (int i = 0; i < mapChunks.Count; i++)
             {
-                if(mapChunks[i].terrainSettings.isWalkable)
+                if(!mapChunks[i].TileSO.isWalkable)
                 {
                     //previous chunk
                     int previousIndex = i - 1;
-                    if(previousIndex >= 0 && !mapChunks[previousIndex].terrainSettings.isWalkable)
+                    if(previousIndex >= 0 && mapChunks[previousIndex].TileSO.isWalkable)
                     {
-                        ChunkData chunkData = mapChunks[previousIndex];
-                        chunkData.size.y = Mathf.Min(mapChunks[previousIndex].size.y, mapChunks[i].size.y);
-                        mapChunks[previousIndex] = chunkData;
+                        ChunkData chunkData = mapChunks[i];
+                        //Debug.Log("chunk data from list " + chunkData.rect);
+                        //Debug.Log(mapChunks[i].rect.y + " old new y");
+                        chunkData.rect.height = Mathf.Min(mapChunks[previousIndex].rect.height, mapChunks[i].rect.height);
+                        mapChunks[i] = chunkData;
+                        //Debug.Log(mapChunks[i].rect.y + " actual new y, previous chunk Y is " + mapChunks[previousIndex].rect.y);
                     }
                     //next chunk
                     int nextIndex = i + 1;
-                    if(nextIndex < mapChunks.Count && !mapChunks[nextIndex].terrainSettings.isWalkable)
+                    if(nextIndex < mapChunks.Count && mapChunks[nextIndex].TileSO.isWalkable)
                     {
-                        ChunkData chunkData = mapChunks[nextIndex];
-                        chunkData.size.y = Mathf.Min(mapChunks[nextIndex].size.y, mapChunks[i].size.y);
-                        mapChunks[nextIndex] = chunkData;
+                        ChunkData chunkData = mapChunks[i];
+                        //Debug.Log(mapChunks[i].rect.y + "old new y");
+                        chunkData.rect.height = Mathf.Min(mapChunks[nextIndex].rect.height, mapChunks[i].rect.height);
+                        mapChunks[i] = chunkData;
+                        //Debug.Log(mapChunks[i].rect.y + "actual new y, next chuhnk Y is "+ mapChunks[nextIndex].rect.y);
                     }
                 }
             }
 
         }
         private void UpdateTilesToTilemap(List<ChunkData> mapChunks)
-        {
-            int lenght = 0;
+        {            
             //all chunk data to tileset
             foreach (var item in mapChunks)
             {
-                int xSize = item.size.x;
-                int ySize = item.size.y;
+                
 
-                for (int x = 0; x < xSize; x++)
+                for (int x = item.rect.xMin; x < item.rect.xMax; x++)
                 {
-                    for (int y = 0; y < ySize; y++)
+                    for (int y = item.rect.yMin; y < item.rect.yMax; y++)
                     {
-                        Debug.Log("saving " + item.terrainSettings.tileOfChunk + " to the " + collisionTilemap + " at position " + new Vector3Int(lenght, y));
-                        collisionTilemap.SetTile(new Vector3Int(lenght, y), item.terrainSettings.tileOfChunk) ;
+                        //Debug.Log("saving " + item.TileSO.tileRule + " to the " + collisionTilemap + " at position " + new Vector3Int(x, y));
+                        collisionTilemap.SetTile(new Vector3Int(x, y), item.TileSO.tileRule) ;
                     }
-                    lenght++;
+                    
                 }
             }
             collisionTilemap.RefreshAllTiles();
         }
-        private TerrainSettings GetRandomTerrainSettings()
+        private TileLevelSO GetRandomTerrainSettings()
         {
             
-            List<TerrainSettings> chunksToSelect = new();
+            List<TileLevelSO> chunksToSelect = new();
             //get random terrain
             foreach (var chunk in chunksForThisMap)
             {
@@ -172,7 +185,7 @@ namespace Generator
             //if gap, then use previous
             int newRndHeight = Random.Range(previousHeight - maxTileHeightChange, 
                             previousHeight + maxTileHeightChange + 1);
-            newRndHeight = Mathf.Clamp(newRndHeight, minTileHeight, heightOfMap - 1);
+            newRndHeight = Mathf.Clamp(newRndHeight, minTileHeight, maxTileHeight);
             
             return newRndHeight;
         }
