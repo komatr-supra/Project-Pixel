@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 231714824876595596}
   - component: {fileID: 231714824876595598}
   - component: {fileID: 231714824876595599}
+  - component: {fileID: -8867735618459492048}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -48,33 +49,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4099a37d194c8b944b2b7f2a80e4fbeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textMeshDebug: {fileID: 231714825293329481}
-  idleSprites:
-  - {fileID: 750525416, guid: b4d6edd9b2fb6fb40bf72f26eb478c21, type: 3}
-  - {fileID: 2058587532, guid: b4d6edd9b2fb6fb40bf72f26eb478c21, type: 3}
-  - {fileID: 871328123, guid: b4d6edd9b2fb6fb40bf72f26eb478c21, type: 3}
-  - {fileID: -282612450, guid: b4d6edd9b2fb6fb40bf72f26eb478c21, type: 3}
-  runSprites:
-  - {fileID: -1194545870, guid: 116c2191ab1966b43b4f95a1e195b778, type: 3}
-  - {fileID: 1736099930, guid: 116c2191ab1966b43b4f95a1e195b778, type: 3}
-  - {fileID: -891960639, guid: 116c2191ab1966b43b4f95a1e195b778, type: 3}
-  - {fileID: 1801251858, guid: 116c2191ab1966b43b4f95a1e195b778, type: 3}
-  - {fileID: -938676727, guid: 116c2191ab1966b43b4f95a1e195b778, type: 3}
-  - {fileID: 1184278450, guid: 116c2191ab1966b43b4f95a1e195b778, type: 3}
-  attackSprites:
-  - {fileID: 175334107, guid: 39fdfb8f9d48b464f87b1c29db76cbfc, type: 3}
-  - {fileID: -513659705, guid: 39fdfb8f9d48b464f87b1c29db76cbfc, type: 3}
-  - {fileID: 1769061387, guid: 39fdfb8f9d48b464f87b1c29db76cbfc, type: 3}
-  - {fileID: 1656678813, guid: 39fdfb8f9d48b464f87b1c29db76cbfc, type: 3}
-  - {fileID: 603096328, guid: 39fdfb8f9d48b464f87b1c29db76cbfc, type: 3}
-  - {fileID: 452651189, guid: 39fdfb8f9d48b464f87b1c29db76cbfc, type: 3}
-  jumpSprites:
-  - {fileID: -1105663184, guid: 7cf4ea4cf938d56449e2f12d37f494cd, type: 3}
-  - {fileID: 87895862, guid: 7cf4ea4cf938d56449e2f12d37f494cd, type: 3}
-  - {fileID: 1741412582, guid: 7cf4ea4cf938d56449e2f12d37f494cd, type: 3}
-  - {fileID: -2037510057, guid: 7cf4ea4cf938d56449e2f12d37f494cd, type: 3}
-  animationSpeed: 15
-  spriteRendererMain: {fileID: 231714825077452314}
 --- !u!50 &231714824876595598
 Rigidbody2D:
   serializedVersion: 4
@@ -112,6 +86,19 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0.5}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
+--- !u!114 &-8867735618459492048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231714824876595595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 490398e2073315f4f9a61de43a9437a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1
 --- !u!1 &231714825077452315
 GameObject:
   m_ObjectHideFlags: 0

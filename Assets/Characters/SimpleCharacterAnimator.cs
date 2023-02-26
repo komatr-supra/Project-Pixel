@@ -6,77 +6,52 @@ using TMPro;
 
 namespace Character.Animator
 {
-    #region Animator enums
-    public enum AnimType
+    public struct Data
     {
-        idle,
-        run,
-        attack,
-        jump
+        public Data(Vector2 dir, bool gnd)
+        {
+            direction = dir;
+            isGrounded = gnd;
+        }
+        public Vector2 direction;
+        public bool isGrounded;
     }
-    #endregion
     public class SimpleCharacterAnimator : MonoBehaviour
-    {        
-        #region Variables
-        [SerializeField] TextMeshPro textMeshDebug;
-        [SerializeField] private Sprite[] idleSprites;
-        [SerializeField] private Sprite[] runSprites;
-        [SerializeField] private Sprite[] attackSprites;
-        [SerializeField] private Sprite[] jumpSprites;
-        private Sprite[] actualAnimation;
-        [SerializeField] private float animationSpeed = 5f;
-        [SerializeField] SpriteRenderer spriteRendererMain;
-        private float counter;
-        private int index;
-        private Dictionary<AnimType, Sprite[]> spritesDictionary;
-        AnimType actualAnimType;
-        #endregion
-        private void Awake()
-        {
-            
-            spritesDictionary = new();        
-            LoadSprites();
+    {
+        [SerializeField] Sprite[] idleSprites;
+        [SerializeField] Sprite[] moveSprites;
+        [SerializeField] Sprite[] jumpSprites;
+        [SerializeField] Sprite[] fallSprites;
+        [SerializeField] SpriteRenderer charcterRenderer;
+        private StateMachine stateMachine;
+        private Data moveData;
+        private bool attack;
+        private void Awake() {
+            stateMachine = new StateMachine();
+            var idle = new BaseAnimation(idleSprites, charcterRenderer);
+            var move = new BaseAnimation(moveSprites, charcterRenderer);
+            var jump = new BaseAnimation(jumpSprites, charcterRenderer);
+            var fall = new BaseAnimation(fallSprites, charcterRenderer);
+            stateMachine.AddAnyTransition(idle, () => Mathf.Abs(moveData.direction.x) < 0.01f && moveData.isGrounded);
+            stateMachine.AddTransition(idle, move, () => Mathf.Abs(moveData.direction.x) > 0.01f);
+            stateMachine.AddAnyTransition(jump, () => moveData.direction.y > 0.01f && !moveData.isGrounded);
+            stateMachine.AddAnyTransition(fall, () => moveData.direction.y < 0.01f && !moveData.isGrounded);
+            stateMachine.SetState(idle);
         }
-        private void Start()
-        {
-            //set starting animation
-            actualAnimType = AnimType.idle;
-            actualAnimation = spritesDictionary.GetValueOrDefault(actualAnimType);
+        private void Start() {
         }
-        private void Update()
-        {
-            if(counter < 1)
-            {
-                counter += Time.deltaTime * animationSpeed;
-                return;
-            }
-            //time for next frame
-            counter = 0;
-            index = GetNextIndex();
-            textMeshDebug.text = index.ToString();
-            spriteRendererMain.sprite = actualAnimation[index];
+        private void Update() {
+            stateMachine.Tick();
         }
+        public void SetMoveStats(Data data)
+        {
+            moveData = data;
 
-        private int GetNextIndex()
-        {
-            return ++index < actualAnimation.Length ? index : 0;
         }
-
-        private void LoadSprites()
+        public void AttackTrigger()
         {
-            spritesDictionary.Add(AnimType.idle, idleSprites);
-            spritesDictionary.Add(AnimType.run, runSprites);
-            spritesDictionary.Add(AnimType.attack, attackSprites);
-            spritesDictionary.Add(AnimType.jump, jumpSprites);
-        }
-        public void PlayAnimation(AnimType animationType)
-        {
-            if(animationType == actualAnimType)return;
-            actualAnimType = animationType;
-            actualAnimation = spritesDictionary.GetValueOrDefault(animationType);
-            counter = 0;
-            index = 0;
-            spriteRendererMain.sprite = actualAnimation[index];
+            if(attack == true || !moveData.isGrounded) return;
+            attack = true;
         }
     }
 }
