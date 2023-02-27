@@ -12,19 +12,25 @@ public class BaseAnimation : IState
     private Sprite[] sprites;
     private int index;
     private bool isLoop;
+    private Action trigger;
+    private Action end;
+    int frameTrigger = -1;
     public BaseAnimation(Sprite[] sprites, SpriteRenderer spriteRenderer, bool loop = true)
     {
         this.spriteRenderer = spriteRenderer;
         this.sprites = sprites;
         isLoop = loop;
+
     }
 
     public void OnEnter()
     {
         index = 0;
         counter = 0;
+        CheckTrigger();
         spriteRenderer.sprite = sprites[index];
     }
+
 
     public void OnExit()
     {
@@ -39,12 +45,32 @@ public class BaseAnimation : IState
     private void Animate()
     {
         counter += Time.deltaTime;
-        if(counter > frameTimePerSecond)
+        if(counter < frameTimePerSecond) return;
+        CheckTrigger();
+        if(++index < sprites.Length)
         {
-            index = ++index < sprites.Length ? index : 0;
+            spriteRenderer.sprite = sprites[index];
             counter = 0;
+            return;
         }
         if(!isLoop)
-        spriteRenderer.sprite = sprites[index];
+        {
+            end?.Invoke();
+        }
+        else
+        {
+            index = 0;
+            spriteRenderer.sprite = sprites[index];
+        }
+    }
+    private void CheckTrigger()
+    {
+        if(frameTrigger == -1 && index != frameTrigger) return;
+        trigger?.Invoke();
+    }
+    public void SetTrigger(int frame, Action action)
+    {
+        trigger = action;
+        frameTrigger = frame;
     }
 }
