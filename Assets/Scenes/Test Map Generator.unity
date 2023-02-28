@@ -551,6 +551,10 @@ PrefabInstance:
       propertyPath: timeToForgiveJumpPressed
       value: 0.07
       objectReference: {fileID: 0}
+    - target: {fileID: 23240382029485042, guid: aa4e9c29920d0f5418dbdca656a753d2, type: 3}
+      propertyPath: characterController
+      value: 
+      objectReference: {fileID: 1049570302}
     - target: {fileID: 231714824876595595, guid: aa4e9c29920d0f5418dbdca656a753d2, type: 3}
       propertyPath: m_Name
       value: Character
@@ -1006,7 +1010,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  jumpPressed: 0
+  keyDelayTime: 0.21
 --- !u!114 &1049570306 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 231714824876595596, guid: aa4e9c29920d0f5418dbdca656a753d2, type: 3}

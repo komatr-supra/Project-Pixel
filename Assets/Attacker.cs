@@ -15,11 +15,11 @@ public class Attacker : MonoBehaviour
         contactFilter2D = new ContactFilter2D();
         size = attackBox.size;
     }
-    public void Attack(Action endAction, out bool canMove)
+    public void Attack(Action endAction, out bool canMoveWithAttacking)
     {
-        canMove = canMoveWithThisWeapon;
+        canMoveWithAttacking = canMoveWithThisWeapon;
         characterAnimator.SetAnimation(SimpleCharacterAnimator.AnimType.attack, CallbackAnimation, endAction);
-
+        
     }
     private void CallbackAnimation()
     {

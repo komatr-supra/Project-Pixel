@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 231714824876595598}
   - component: {fileID: 231714824876595599}
   - component: {fileID: -8867735618459492048}
+  - component: {fileID: 23240382029485042}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -49,6 +50,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4099a37d194c8b944b2b7f2a80e4fbeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  idleSprites: []
+  moveSprites: []
+  jumpSprites: []
+  fallSprites: []
+  attackSprites: []
+  charcterRenderer: {fileID: 0}
 --- !u!50 &231714824876595598
 Rigidbody2D:
   serializedVersion: 4
@@ -99,6 +106,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
+  inAirPenalityModifier: 0.5
+  jumpForce: 50
+--- !u!114 &23240382029485042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231714824876595595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0141a1a6f02d3741b6e1b6596413679, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterController: {fileID: 0}
 --- !u!1 &231714825077452315
 GameObject:
   m_ObjectHideFlags: 0

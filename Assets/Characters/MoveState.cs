@@ -24,6 +24,6 @@ public class MoveState : IState
     public void Tick()
     {
         characterController.mover.Move(characterController.inputVector.x);
-        if(characterController.jumpPressed) characterController.mover.Jump();
+        if(characterController.Jump) characterController.mover.Jump();
     }
 }
