@@ -9,19 +9,21 @@ public class CharacterController : MonoBehaviour
     [SerializeField] internal SimpleCharacterAnimator characterAnimator;
     [SerializeField] LayerMask groundLayer;
     internal Vector2 inputVector;
-    
+    internal Mover mover;
+    internal Attacker attacker;
     private StateMachine stateMachine;
     private Rigidbody2D characterRB;
     public bool jumpPressed;    
     private bool isGrounded;
     private void Awake() {
+        mover = GetComponent<Mover>();
+        attacker = GetComponent<Attacker>();
         characterRB = GetComponent<Rigidbody2D>();
-        var mover = GetComponent<Mover>();
 
         stateMachine = new StateMachine();
-        var idle = new IdleState(this, mover, GetComponent<Attacker>());
-        var move = new MoveState(this, mover);
-        var air = new AirState(this, mover);
+        var idle = new IdleState(this);
+        var move = new MoveState(this);
+        var air = new AirState(this);
         stateMachine.AddAnyTransition(idle, IsIdle());
         stateMachine.AddTransition(idle, move, MovingWithInput());
         stateMachine.AddAnyTransition(air, InAir());
@@ -38,5 +40,6 @@ public class CharacterController : MonoBehaviour
         stateMachine.Tick();
 
     }
+    
 
 }

@@ -5,12 +5,10 @@ using Character.Animator;
 public class MoveState : IState
 {
     CharacterController characterController;
-    Mover mover;
     
-    public MoveState(CharacterController characterController, Mover mover)
+    public MoveState(CharacterController characterController)
     {
         this.characterController = characterController;
-        this.mover = mover;
     }
     public void OnEnter()
     {
@@ -20,12 +18,12 @@ public class MoveState : IState
 
     public void OnExit()
     {
-        mover.Stop();
+        characterController.mover.Stop();
     }
 
     public void Tick()
     {
-        mover.Move(characterController.inputVector.x);
-        if(characterController.jumpPressed) mover.Jump();
+        characterController.mover.Move(characterController.inputVector.x);
+        if(characterController.jumpPressed) characterController.mover.Jump();
     }
 }

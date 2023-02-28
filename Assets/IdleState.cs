@@ -2,21 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleState : IState
+public class IdleState : IUnitState
 {
     CharacterController characterController;
-    Mover mover;
-    Attacker attacker;
-    public IdleState(CharacterController characterController, Mover mover, Attacker attacker)
+    bool isMoveDisabled;
+    public IdleState(CharacterController characterController)
     {
         this.characterController = characterController;
-        this.mover = mover;
-        this.attacker = attacker;
     }
     public void OnEnter()
     {
-        //play idle anim
-        Debug.Log("enter idle");
+        CallbackActionEnd();
     }
 
     public void OnExit()
@@ -24,9 +20,18 @@ public class IdleState : IState
         
     }
 
+    public void CallbackActionEnd()
+    {
+        isMoveDisabled = false;
+        characterController.characterAnimator.SetAnimation(Character.Animator.SimpleCharacterAnimator.AnimType.idle, null, null);
+    }
+
     public void Tick()
     {
-        if(Input.GetKeyDown(KeyCode.Z)) attacker.Attack();
-        if(characterController.jumpPressed) mover.Jump();
+        if(Input.GetKeyDown(KeyCode.Z)) characterController.attacker.Attack(CallbackActionEnd, out isMoveDisabled);
+        if(characterController.jumpPressed) characterController.mover.Jump();
     }
+    
+
+    
 }

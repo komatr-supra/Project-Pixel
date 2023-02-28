@@ -5,12 +5,9 @@ using Character.Animator;
 public class AirState : IState
 {
     CharacterController characterController;
-    Mover mover;
-    
-    public AirState(CharacterController characterController, Mover mover)
+    public AirState(CharacterController characterController)
     {
         this.characterController = characterController;
-        this.mover = mover;
     }
     public void OnEnter()
     {
@@ -20,11 +17,11 @@ public class AirState : IState
 
     public void OnExit()
     {
-        mover.Stop();
+        characterController.mover.Stop();
     }
 
     public void Tick()
     {
-        mover.Move(characterController.inputVector.x, true);
+        characterController.mover.Move(characterController.inputVector.x, true);
     }
 }

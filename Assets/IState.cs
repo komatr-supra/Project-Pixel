@@ -4,3 +4,7 @@
     void OnEnter();
     void OnExit();
 }
+public interface IUnitState : IState
+{
+    void CallbackActionEnd();
+}

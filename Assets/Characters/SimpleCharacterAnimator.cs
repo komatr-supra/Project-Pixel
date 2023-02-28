@@ -22,7 +22,6 @@ namespace Character.Animator
         [SerializeField] Sprite[] fallSprites;
         [SerializeField] Sprite[] attackSprites;
         [SerializeField] SpriteRenderer charcterRenderer;
-        private bool attack;
         private BaseAnimation[] animations;
         int index;
         private void Awake() {
@@ -30,9 +29,9 @@ namespace Character.Animator
             var move = new BaseAnimation(moveSprites, charcterRenderer);
             var jump = new BaseAnimation(jumpSprites, charcterRenderer);
             var fall = new BaseAnimation(fallSprites, charcterRenderer);
-            var attack = new BaseAnimation(attackSprites,charcterRenderer);
-            
-            
+            var attack = new BaseAnimation(attackSprites,charcterRenderer, false);
+            attack.SetFrameForTrigger(4);
+
             animations = new BaseAnimation[]
                     {
                         idle,
@@ -46,13 +45,18 @@ namespace Character.Animator
 
         }
         private void Update() {
-            
+            animations[index].Tick();
         }
         
-        public void SetAnimation(AnimType animationTypeEnum)
+        public void SetAnimation(AnimType animationTypeEnum, Action callback, Action end)
         {
             if((int)animationTypeEnum == index) return;
+            animations[index].OnExit();
+            index = (int)animationTypeEnum;
+            animations[index].OnEnter();
 
+            animations[index].SetTrigger(callback);
+            animations[index].SetEndAction(end);
         }
     }
 }

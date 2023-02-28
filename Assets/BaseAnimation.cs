@@ -65,12 +65,19 @@ public class BaseAnimation : IState
     }
     private void CheckTrigger()
     {
-        if(frameTrigger == -1 && index != frameTrigger) return;
+        if(frameTrigger == -1 || index != frameTrigger) return;
         trigger?.Invoke();
     }
-    public void SetTrigger(int frame, Action action)
+    public void SetTrigger(Action action)
     {
         trigger = action;
+    }
+    public void SetFrameForTrigger(int frame)
+    {
         frameTrigger = frame;
+    }
+    public void SetEndAction(Action endAction)
+    {
+        end = endAction;
     }
 }
