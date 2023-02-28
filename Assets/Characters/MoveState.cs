@@ -12,18 +12,23 @@ public class MoveState : IState
     }
     public void OnEnter()
     {
-        //characterAnimator.PlayAnimation();
         Debug.Log("enter move");
+        characterController.onJumpInputChanged += JumpFromMove;
     }
 
     public void OnExit()
     {
+        characterController.onJumpInputChanged -= JumpFromMove;
         characterController.mover.Stop();
     }
 
     public void Tick()
     {
         characterController.mover.Move(characterController.inputVector.x);
-        if(characterController.Jump) characterController.mover.Jump();
+    }
+    private void JumpFromMove()
+    {
+        characterController.mover.Jump();
+        characterController.ClearJumpInput();
     }
 }

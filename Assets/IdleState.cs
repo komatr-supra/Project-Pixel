@@ -11,13 +11,16 @@ public class IdleState : IUnitState
     }
     public void OnEnter()
     {
+        Debug.Log("idle start");
+        characterController.onAttackInputChanged += AttackFromIdle;
+        characterController.onJumpInputChanged += JumpFromIdle;
         CallbackActionEnd();
-        Debug.Log("idlen start");
     }
 
     public void OnExit()
     {
-
+        characterController.onAttackInputChanged -= AttackFromIdle;
+        characterController.onJumpInputChanged -= JumpFromIdle;
     }
 
     public void CallbackActionEnd()
@@ -31,22 +34,27 @@ public class IdleState : IUnitState
 
     public void Tick()
     {
-        if(characterController.Attack) 
-        {            
-            Debug.Log("attacking");
-            characterController.attacker.Attack(CallbackActionEnd, out bool canMoveWithAttacking);
-            if(canMoveWithAttacking)
-            {
-                characterController.EnableInput();
-            }
-            else
-            {
-                characterController.DisableInput();
-            }
-        }
-        if(characterController.Jump) characterController.mover.Jump();
+        
     }
-    
+    private void JumpFromIdle()
+    {
+        characterController.mover.Jump();
+        characterController.ClearJumpInput();
+    }
+    private void AttackFromIdle()
+    {
+        Debug.Log("attacking from idle");
+        characterController.attacker.Attack(CallbackActionEnd, out bool canMoveWithAttacking);
+        if(canMoveWithAttacking)
+        {
+            characterController.EnableInput();
+        }
+        else
+        {
+            characterController.DisableInput();
+        }
+        characterController.CleatAttackInput("idle state");
+    }
 
     
 }

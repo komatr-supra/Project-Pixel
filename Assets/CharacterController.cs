@@ -14,14 +14,15 @@ public class CharacterController : MonoBehaviour
     internal Vector2 inputVector;
     internal Mover mover;
     internal Attacker attacker;
+    public Action onAttackInputChanged;
+    public Action<Vector2> onMoveInputChanged;
+    public Action onJumpInputChanged;
     private StateMachine stateMachine;
     private Rigidbody2D characterRB;
     private bool jumpInputActive;
-    private float jumpDelayCounter;
-    public bool Jump {get => jumpInputActive; private set{jumpInputActive = value;}}
+    private float jumpDelayCounter = -1;
     private bool attactInputActive;
-    private float attackDelayCounter;
-    public bool Attack {get => attactInputActive; private set{attactInputActive = value;}}
+    private float attackDelayCounter = -1;
     private bool isGrounded;
     private bool isInputDisabled = false;
     private void Awake() {
@@ -30,6 +31,7 @@ public class CharacterController : MonoBehaviour
         characterRB = GetComponent<Rigidbody2D>();
 
         stateMachine = new StateMachine();
+        stateMachine.onNewTransitionStart += HandleInputFromOldState;
         var idle = new IdleState(this);
         var move = new MoveState(this);
         var air = new AirState(this);
@@ -46,17 +48,29 @@ public class CharacterController : MonoBehaviour
         var raycast = Physics2D.Raycast(transform.position + Vector3.up, Vector2.down, 2f, groundLayer);
         isGrounded = raycast;
         stateMachine.Tick();
-
+        
     }
 
     private void UpdateButtonKeeper()
     {
-        if(Jump && jumpDelayCounter > 0) jumpDelayCounter -= Time.deltaTime;
-        else Jump = false;
-        if(Attack && attackDelayCounter > 0) attackDelayCounter -= Time.deltaTime;
-        else Attack = false;
+        if(jumpDelayCounter > 0) jumpDelayCounter -= Time.deltaTime;
+        else ClearJumpInput();
+        if(attackDelayCounter > 0) attackDelayCounter -= Time.deltaTime;
+        else CleatAttackInput(name);
 
 
+    }
+
+    public void CleatAttackInput(string who)
+    {
+        Debug.Log("cleaning attack input" + who);
+        attactInputActive = false;
+    }
+
+    public void ClearJumpInput()
+    {
+        
+        jumpInputActive = false;
     }
 
     public void EnableInput()
@@ -70,16 +84,25 @@ public class CharacterController : MonoBehaviour
     public void SetInputVector(Vector2 inputVector)
     {
         this.inputVector = inputVector;
+        onMoveInputChanged?.Invoke(inputVector);
     }
     public void PerformJump()
     {
         jumpDelayCounter = keyDelayTime;
-        Jump = true;
+        jumpInputActive = true;
+        onJumpInputChanged?.Invoke();
     }
     public void PerformAttack()
     {
         attackDelayCounter = keyDelayTime;
-        Attack = true;
-    }
+        attactInputActive = true;
+        onAttackInputChanged?.Invoke();
 
+    }
+    //when key was pressed in old transition, but wasnt consumed
+    private void HandleInputFromOldState()
+    {
+        if(jumpInputActive) onJumpInputChanged?.Invoke();
+        if(attactInputActive) onAttackInputChanged?.Invoke();
+    }
 }
