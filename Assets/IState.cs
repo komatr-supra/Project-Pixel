@@ -1,4 +1,5 @@
-﻿public interface IState
+﻿//interface fpr state machine
+public interface IState
 {
     void Tick();
     void OnEnter();

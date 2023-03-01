@@ -2,13 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimpleCameraController : MonoBehaviour
+//really easy camera controller
+namespace ProjectPixel.System
 {
-    float pixel = 1 / 32f;
-    [SerializeField] Transform follow;
-    [SerializeField] Vector2 offset;    
-    void LateUpdate()
+    public class SimpleCameraController : MonoBehaviour
     {
-        transform.position = new Vector3(follow.position.x + offset.x * pixel, follow.position.y + offset.y * pixel, -10);
+        float pixel = 1 / 32f;
+        [SerializeField] Transform follow;
+        [SerializeField] Vector2 offset;
+        void LateUpdate()
+        {
+            transform.position = new Vector3(follow.position.x + offset.x * pixel, follow.position.y + offset.y * pixel, -10);
+        }
     }
 }

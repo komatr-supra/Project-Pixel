@@ -1,32 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Character.Animator;
+using ProjectPixel.Character.Animation;
 using System;
-
-public class Attacker : MonoBehaviour
+namespace ProjectPixel.Character
 {
-    [SerializeField] BoxCollider2D attackBox;
-    [SerializeField] SimpleCharacterAnimator characterAnimator;
-    bool canMoveWithThisWeapon = false;
-    Vector2 size;
-    private void Awake() {
-        size = attackBox.size;
-    }
-    public void Attack(Action endAction, out bool canMoveWithAttacking)
+//maybe rename to WEaponSystem same base class or interface with mover???
+    public class Attacker : MonoBehaviour
     {
-        canMoveWithAttacking = canMoveWithThisWeapon;
-        characterAnimator.SetAnimation(SimpleCharacterAnimator.AnimType.attack, CallbackAnimation, endAction);
-        
-    }
-    private void CallbackAnimation()
-    {
-        Collider2D[] collilidersForAttack = Physics2D.OverlapBoxAll(attackBox.bounds.center, attackBox.size, 0);
-        foreach (var item in collilidersForAttack)
+        [SerializeField] BoxCollider2D attackBox;
+        //animation should be controlled by states? -> they will know who call them
+        //and can play right animation .... move, jump, idle....
+        [SerializeField] SimpleCharacterAnimator characterAnimator;
+        //this will be in weapon data, or in skills? 
+        bool canMoveWithThisWeapon = false;
+        //main entry => rename to something like Execute()?
+        public void Attack(Action endAction, out bool canMoveWithAttacking)
         {
-            if(item.TryGetComponent<IAttackable>(out IAttackable target))
+            canMoveWithAttacking = canMoveWithThisWeapon;
+            characterAnimator.SetAnimation(AnimType.attack, CallbackAnimation, endAction);
+        }
+        //this is callback when animation hit enemy
+        private void CallbackAnimation()
+        {
+            //this is behaviour for no weapon(fist) -> move it out? to Weapon abstract class(interface)? 
+            //and filled with WeaponDataSO
+            Collider2D[] collilidersForAttack = Physics2D.OverlapBoxAll(attackBox.bounds.center, attackBox.size, 0);
+            foreach (var item in collilidersForAttack)
             {
-                target.TakeDamage();
+                if (item.TryGetComponent<IAttackable>(out IAttackable target))
+                {
+                    target.TakeDamage();
+                }
             }
         }
     }

@@ -4,11 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-namespace Character.Animator
+namespace ProjectPixel.Character.Animation
 {
-    public class SimpleCharacterAnimator : MonoBehaviour
-    {
-        public enum AnimType
+    public enum AnimType
         {
             idle,
             move,
@@ -16,6 +14,9 @@ namespace Character.Animator
             fall,
             attack
         }
+    public class SimpleCharacterAnimator : MonoBehaviour
+    {
+        #region Variables
         [SerializeField] Sprite[] idleSprites;
         [SerializeField] Sprite[] moveSprites;
         [SerializeField] Sprite[] jumpSprites;
@@ -24,6 +25,8 @@ namespace Character.Animator
         [SerializeField] SpriteRenderer charcterRenderer;
         private BaseAnimation[] animations;
         int index;
+        #endregion
+
         private void Awake() {
             var idle = new BaseAnimation(idleSprites, charcterRenderer);
             var move = new BaseAnimation(moveSprites, charcterRenderer);
@@ -41,13 +44,9 @@ namespace Character.Animator
                         attack
                     };
         }
-        private void Start() {
-
-        }
         private void Update() {
             animations[index].Tick();
-        }
-        
+        }        
         public void SetAnimation(AnimType animationTypeEnum, Action callback, Action end)
         {
             if((int)animationTypeEnum == index) return;

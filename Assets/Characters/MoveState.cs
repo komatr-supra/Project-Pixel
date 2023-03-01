@@ -1,34 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Character.Animator;
-public class MoveState : IState
+using ProjectPixel.Character.Animation;
+
+namespace ProjectPixel.Character.State
 {
-    CharacterController characterController;
-    
-    public MoveState(CharacterController characterController)
+    public class MoveState : IState
     {
-        this.characterController = characterController;
-    }
-    public void OnEnter()
-    {
-        Debug.Log("enter move");
-        characterController.onJumpInputChanged += JumpFromMove;
-    }
+        CharacterController characterController;
 
-    public void OnExit()
-    {
-        characterController.onJumpInputChanged -= JumpFromMove;
-        characterController.mover.Stop();
-    }
+        public MoveState(CharacterController characterController)
+        {
+            this.characterController = characterController;
+        }
+        public void OnEnter()
+        {
+            Debug.Log("enter move");
+            characterController.onJumpInputChanged += JumpFromMove;
+        }
 
-    public void Tick()
-    {
-        characterController.mover.Move(characterController.inputVector.x);
-    }
-    private void JumpFromMove()
-    {
-        characterController.mover.Jump();
-        characterController.ClearJumpInput();
+        public void OnExit()
+        {
+            characterController.onJumpInputChanged -= JumpFromMove;
+            characterController.mover.Stop();
+        }
+
+        public void Tick()
+        {
+            characterController.mover.Move(characterController.inputVector.x);
+        }
+        private void JumpFromMove()
+        {
+            characterController.mover.Jump();
+            characterController.ClearJumpInput();
+        }
     }
 }

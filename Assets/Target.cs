@@ -2,22 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Target : MonoBehaviour, IAttackable
+//testing for taking attack
+namespace ProjectPixel.Character.Enemy
 {
-    public void TakeDamage()
+    public class Target : MonoBehaviour, IAttackable
     {
-        Debug.Log(name + " was damaged");
-    }
+        public void TakeDamage()
+        {
+            Debug.Log(name + " was damaged");
+        }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+        // Start is called before the first frame update
+        void Start()
+        {
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
     }
 }
